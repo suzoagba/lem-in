@@ -81,7 +81,7 @@ One by one:
 2. Compare the result to the given one.
 
 All the audit examples together:
-1. `./test.sh`
+1. `./test.sh` (use Return Key for next example)
 2. Compare the results.
 
 Audit questions can be found [here](https://github.com/01-edu/public/tree/master/subjects/lem-in/audit).

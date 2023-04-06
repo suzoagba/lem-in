@@ -108,7 +108,7 @@ func routesByLength() {
 		routesMap[len(routes[a])] = append(routesMap[len(routes[a])], routes[a])
 	}
 	lemIn.RoutesByLength = routesMap
-	for i, _ := range lemIn.RoutesByLength {
+	for i := range lemIn.RoutesByLength {
 		length = append(length, i)
 	}
 	sort.Ints(length)
@@ -128,10 +128,9 @@ func sendAntsOnTheirWay() {
 	// Put length of routes to an array
 	for a := 0; a < len(availableRouteLength); a++ {
 		pathForAnts[a] = []int{}
-		for _, b := range lemIn.RoutesByLength[availableRouteLength[a]] {
-			availableRoutes = append(availableRoutes, b)
+			availableRoutes = append(availableRoutes, lemIn.RoutesByLength[availableRouteLength[a]]...)
 		}
-	}
+
 	// Find which way to send the ants according to path length and waiting line length
 	var result [][]string
 	for a := 1; a <= lemIn.NrOfAnts; a++ {

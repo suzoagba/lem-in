@@ -28,13 +28,12 @@ func findAllPath() {
 // Find all possible routes
 func possibleRoutes(point string, visited []string, route []string) {
 	if !ifContains(visited, point) {
-		route = append(route, point)
 		if point == lemIn.EndPointName {
-			blackMagic(append(route, point))
+			blackMagic(append(append(route, point), point))
 		} else {
 			visited = append(visited, point)
 			for a := 0; a < len(lemIn.Tunnels[point]); a++ {
-				possibleRoutes(lemIn.Tunnels[point][a], visited, route)
+				possibleRoutes(lemIn.Tunnels[point][a], visited, append(route, point))
 			}
 		}
 	}
@@ -128,29 +127,27 @@ func sendAntsOnTheirWay() {
 	// Put length of routes to an array
 	for a := 0; a < len(availableRouteLength); a++ {
 		pathForAnts[a] = []int{}
-			availableRoutes = append(availableRoutes, 
-				lemIn.RoutesByLength[availableRouteLength[a]]...)
-		}
+		availableRoutes = append(availableRoutes, lemIn.RoutesByLength[availableRouteLength[a]]...)
+	}
 
 	// Find which way to send the ants according to path length and waiting line length
 	var result [][]string
 	for a := 1; a <= lemIn.NrOfAnts; a++ {
-		smallestStack := smallestLine(availableRouteLength, pathForAnts)
+		smallestStack := smallestLine(availableRouteLength, pathForAnts, a)
 		pathForAnts[smallestStack] = append(pathForAnts[smallestStack], a)
-		for c, b := range availableRoutes[smallestStack] {
-			if b != lemIn.StartPointName {
-				var antsBeforeInPath int
-				if len(availableRoutes[smallestStack]) == 2 {
-					antsBeforeInPath = 1
-				} else {
-					antsBeforeInPath = len(pathForAnts[smallestStack])
-				}
-				position := antsBeforeInPath - 1 + c - 1
-				newString := "L" + strconv.Itoa(a) + "-" + b
-				if len(result) > position {
-					result[position] = append(result[position], newString)
-				} else {
-					result = append(result, []string{newString})
+	}
+
+	for n1, i := range pathForAnts {
+		for n2, ant := range i {
+			for n3, room := range availableRoutes[n1] {
+				if n3 != 0 {
+					position := n2 + n3 - 1
+					newString := "L" + strconv.Itoa(ant) + "-" + room
+					if len(result) > position {
+						result[position] = append(result[position], newString)
+					} else {
+						result = append(result, []string{newString})
+					}
 				}
 			}
 		}
@@ -160,8 +157,8 @@ func sendAntsOnTheirWay() {
 	}
 }
 
-func smallestLine(availableRouteLength []int, pathForAnts map[int][]int) int {
-	smallestNr := len(pathForAnts[0]) + +availableRouteLength[0]
+func smallestLine(availableRouteLength []int, pathForAnts map[int][]int, ant int) int {
+	smallestNr := len(pathForAnts[0]) + availableRouteLength[0]
 	smallest := 0
 	for b := 0; b < len(availableRouteLength); b++ {
 		if len(pathForAnts[b])+availableRouteLength[b] < smallestNr {

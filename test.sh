@@ -61,4 +61,4 @@ read -rp "$*"
 
 # Print a message indicating that all tests are complete
 echo
-echo "All done! If no errors, then the test was passed."
+echo "All done!"

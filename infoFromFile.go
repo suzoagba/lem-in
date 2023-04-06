@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 )
 
 // Function to get info from input file
 func getInfoFromFile(lines []string) {
+
 	start := false // Start coordinates
 	end := false   // End coordinates
 
@@ -38,6 +40,8 @@ func getInfoFromFile(lines []string) {
 					end = false
 				} else if len(tunnel) == 2 {
 					lemIn.OriginalTunnels = append(lemIn.OriginalTunnels, line)
+					tunnels[tunnel[0]] = appendIfNotContains(tunnels[tunnel[0]], tunnel[1])
+					sort.Strings(tunnel)
 					tunnels[tunnel[0]] = appendIfNotContains(tunnels[tunnel[0]], tunnel[1])
 				}
 			} else if line == "##start" { // If this, get the next line as StartPointName coordinates

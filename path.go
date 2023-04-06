@@ -128,7 +128,8 @@ func sendAntsOnTheirWay() {
 	// Put length of routes to an array
 	for a := 0; a < len(availableRouteLength); a++ {
 		pathForAnts[a] = []int{}
-			availableRoutes = append(availableRoutes, lemIn.RoutesByLength[availableRouteLength[a]]...)
+			availableRoutes = append(availableRoutes, 
+				lemIn.RoutesByLength[availableRouteLength[a]]...)
 		}
 
 	// Find which way to send the ants according to path length and waiting line length
